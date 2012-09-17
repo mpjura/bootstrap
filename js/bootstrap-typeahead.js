@@ -94,7 +94,7 @@
       var that = this
 
       items = $.grep(items, function (item) {
-        return that.matcher(item)
+        return ( typeof items === 'object' ) ? that.matcher(item.name) : that.matcher(item)
       })
 
       items = this.sorter(items)
@@ -115,10 +115,12 @@
         , caseSensitive = []
         , caseInsensitive = []
         , item
+        , val
 
       while (item = items.shift()) {
-        if (!item.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
-        else if (~item.indexOf(this.query)) caseSensitive.push(item)
+        val = ( typeof item === 'object' ) ? item.name : item
+        if (!val.toLowerCase().indexOf(this.query.toLowerCase())) beginswith.push(item)
+        else if (~val.indexOf(this.query)) caseSensitive.push(item)
         else caseInsensitive.push(item)
       }
 
@@ -136,8 +138,12 @@
       var that = this
 
       items = $(items).map(function (i, item) {
-        i = $(that.options.item).attr('data-value', item)
-        i.find('a').html(that.highlighter(item))
+        var isModel = ( typeof item == 'object' )
+          , val = ( isModel ) ? item.name : item
+          , display = ( isModel ) ? item.display : item
+          
+        i = $(that.options.item).attr('data-value', val)
+        i.find('a').html(that.highlighter(display))
         return i[0]
       })
 
