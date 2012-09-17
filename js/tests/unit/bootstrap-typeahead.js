@@ -51,6 +51,25 @@ $(function () {
 
         typeahead.$menu.remove()
       })
+      
+      test("should accept array of objects with name/display keys as a data source", function () {
+        var $input = $('<input />').typeahead({
+              source: [
+                { name: 'aa', display: 'Path / to / aa' },
+                { name: 'ab', display: 'Path / to / ab' },
+                { name: 'ac', display: 'Path / to / ac' }
+              ]
+            })
+          , typeahead = $input.data('typeahead')
+        
+        $input.val('a')
+        typeahead.lookup()
+        
+        ok(typeahead.$menu.is(':visible'), 'typeahead is visible')
+        equals(typeahead.$menu.find('li').length, 3, 'has 3 items in menu')
+        equals(typeahead.$menu.find('.active').length, 1, 'one item is active')
+        
+      })
 
       test("should accept data source via synchronous function", function () {
         var $input = $('<input />').typeahead({

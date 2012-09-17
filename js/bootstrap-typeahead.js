@@ -94,7 +94,7 @@
       var that = this
 
       items = $.grep(items, function (item) {
-        return ( typeof items === 'object' ) ? that.matcher(item.name) : that.matcher(item)
+        return ( typeof item === 'object' ) ? that.matcher(item.name) : that.matcher(item)
       })
 
       items = this.sorter(items)
